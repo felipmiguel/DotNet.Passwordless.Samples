@@ -24,7 +24,7 @@ namespace Passwordless.WebAPI.PgSql.EF.Model
                     new Checklist
                     {
                         Name = "Checklist 1",
-                        Date = DateTime.Now,
+                        Date = DateTime.UtcNow,
                         Description = "Checklist 1 Description",
                         CheckItems = new List<CheckItem>
                         {
@@ -37,7 +37,7 @@ namespace Passwordless.WebAPI.PgSql.EF.Model
                     new Checklist
                     {
                         Name = "Checklist 2",
-                        Date = DateTime.Now,
+                        Date = DateTime.UtcNow,
                         Description = "Checklist 2 Description",
                         CheckItems = new List<CheckItem>
                         {

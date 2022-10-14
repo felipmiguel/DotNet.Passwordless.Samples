@@ -10,18 +10,21 @@ namespace Passwordless.WebAPI.PgSql.Controllers
     public class ChecklistController : ControllerBase
     {
         private readonly ILogger<ChecklistController> _logger;
-        private readonly ChecklistContext checklistContext;
+        private readonly IDbContextFactory<ChecklistContext> contextFactory;
 
-        public ChecklistController(ILogger<ChecklistController> logger, ChecklistContext checklistContext)
+        public ChecklistController(ILogger<ChecklistController> logger, IDbContextFactory<ChecklistContext> contextFactory)
         {
             _logger = logger;
-            this.checklistContext = checklistContext;
+            this.contextFactory = contextFactory;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Checklist>> Get()
         {
-            return await checklistContext.Checklists.ToListAsync();
+            using (var context = contextFactory.CreateDbContext())
+            {
+                return await context.Checklists.ToListAsync();
+            }
         }
     }
 }

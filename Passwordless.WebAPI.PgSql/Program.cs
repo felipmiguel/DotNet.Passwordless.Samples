@@ -2,9 +2,9 @@ using AzureDb.Passwordless.Postgresql;
 using Microsoft.EntityFrameworkCore;
 using Passwordless.WebAPI.PgSql.EF;
 using Passwordless.WebAPI.PgSql.EF.Model;
+using Passwordless.WebAPI.PgSql.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 
 // Add services to the container.
@@ -16,7 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ChecklistContext>(options =>
 {
     AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), npgopts =>
+    string connectionString = builder.Configuration.GetConnectionStringFallback();
+    options.UseNpgsql(connectionString, npgopts =>
     {
         npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
     });
@@ -45,3 +46,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
