@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ChecklistContext>(options =>
+builder.Services.AddDbContextFactory<ChecklistContext>(options =>
 {
     AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
     string connectionString = builder.Configuration.GetConnectionStringFallback();
@@ -22,6 +22,15 @@ builder.Services.AddDbContext<ChecklistContext>(options =>
         npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
     });
 });
+//builder.Services.AddDbContext<ChecklistContext>(options =>
+//{
+//    AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
+//    string connectionString = builder.Configuration.GetConnectionStringFallback();
+//    options.UseNpgsql(connectionString, npgopts =>
+//    {
+//        npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
+//    });
+//});
 
 var app = builder.Build();
 

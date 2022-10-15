@@ -9,25 +9,24 @@ namespace Passwordless.WebAPI.PgSql.EF
 {
     public class ChecklistContext : DbContext
     {
-        private readonly IConfiguration configuration;
 
         public DbSet<Checklist> Checklists { get; set; }
         public DbSet<CheckItem> CheckItems { get; set; }
         
-        public ChecklistContext(DbContextOptions<ChecklistContext> options, IConfiguration configuration) : base(options)
+        public ChecklistContext(DbContextOptions<ChecklistContext> options/*, IConfiguration configuration*/) : base(options)
         {
-            this.configuration = configuration;
+            //this.configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseNpgsql("Server=postgres-passwordless.postgres.database.azure.com;Database=checklist;Port=5432;User Id=azureuser@postgres-passwordless;Ssl Mode=Require;Trust Server Certificate=true;Password=Corp123456789!");
-            AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
-            optionsBuilder.UseNpgsql(configuration.GetConnectionStringFallback(), npgopts =>
-            {
-                npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
-            });
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseNpgsql("Server=postgres-passwordless.postgres.database.azure.com;Database=checklist;Port=5432;User Id=azureuser@postgres-passwordless;Ssl Mode=Require;Trust Server Certificate=true;Password=Corp123456789!");
+        //    AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
+        //    optionsBuilder.UseNpgsql(configuration.GetConnectionStringFallback(), npgopts =>
+        //    {
+        //        npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
+        //    });
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

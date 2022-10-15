@@ -21,7 +21,7 @@ dotnet build
 USER=$(az account show --query user.name -o tsv)
 
 # Get connections string
-CONNSTRING="Server=${POSTGRESQL_HOST}.postgres.database.azure.com.postgres.database.azure.com;Database=${DATABASE_NAME};Port=5432;User Id=${USER}@${POSTGRESQL_HOST};Ssl Mode=Require;Trust Server Certificate=true"
+CONNSTRING="Server=${POSTGRESQL_HOST}.postgres.database.azure.com;Database=${DATABASE_NAME};Port=5432;User Id=${USER}@${POSTGRESQL_HOST};Ssl Mode=Require;Trust Server Certificate=true"
 ASPNETCORE_ENVIRONMENT=Deployment
 echo "{\"ConnectionStrings\":{\"AZURE_POSTGRESQL_CONNECTIONSTRING\":\"${CONNSTRING}\"}}" > appsettings.Deployment.json
 dotnet tool install --global dotnet-ef

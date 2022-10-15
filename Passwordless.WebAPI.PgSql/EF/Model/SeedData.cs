@@ -6,8 +6,8 @@ namespace Passwordless.WebAPI.PgSql.EF.Model
     {
         public static void Initialize(IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            DbContextOptions<ChecklistContext> options = serviceProvider.GetRequiredService<DbContextOptions<ChecklistContext>>();
-            using (var context = new ChecklistContext(options, configuration))
+            IDbContextFactory<ChecklistContext> contextFactory= serviceProvider.GetRequiredService<IDbContextFactory<ChecklistContext>>();
+            using (var context = contextFactory.CreateDbContext())
             {
                 if (context == null || context.Checklists == null)
                 {
