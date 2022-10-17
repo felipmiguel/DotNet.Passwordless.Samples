@@ -22,15 +22,6 @@ builder.Services.AddDbContextFactory<ChecklistContext>(options =>
         npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
     });
 });
-//builder.Services.AddDbContext<ChecklistContext>(options =>
-//{
-//    AzureIdentityPostgresqlPasswordProvider passwordProvider = new AzureIdentityPostgresqlPasswordProvider();
-//    string connectionString = builder.Configuration.GetConnectionStringFallback();
-//    options.UseNpgsql(connectionString, npgopts =>
-//    {
-//        npgopts.ProvidePasswordCallback(passwordProvider.ProvidePasswordCallback);
-//    });
-//});
 
 var app = builder.Build();
 

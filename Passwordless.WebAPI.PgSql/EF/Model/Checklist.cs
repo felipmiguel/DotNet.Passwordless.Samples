@@ -9,10 +9,10 @@ namespace Passwordless.WebAPI.PgSql.EF.Model
         [Key]
         public int ID { get; set; }
         
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public DateTime Date { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public virtual ICollection<CheckItem> CheckItems { get; set; }
+        public virtual ICollection<CheckItem>? CheckItems { get; set; }
     }
 }

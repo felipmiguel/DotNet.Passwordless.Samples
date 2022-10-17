@@ -23,8 +23,17 @@ namespace Passwordless.WebAPI.PgSql.Controllers
         {
             using (var context = contextFactory.CreateDbContext())
             {
-                return await context.Checklists.ToListAsync();
+                if (context.Checklists != null)
+                {
+                    return await context.Checklists.ToListAsync();
+                }
+                else
+                {
+                    _logger.LogError("Checklists is null");
+                    throw new Exception("database not properly initialized");
+                }
             }
+            
         }
     }
 }

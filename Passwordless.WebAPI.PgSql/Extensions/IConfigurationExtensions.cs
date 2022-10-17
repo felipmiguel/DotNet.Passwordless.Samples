@@ -4,7 +4,7 @@
     {
         public static string GetConnectionStringFallback(this IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("DefaultConnection"); ;
+            string? connectionString = configuration.GetConnectionString("DefaultConnection"); ;
             if (string.IsNullOrEmpty(connectionString))
             {
                 System.Console.WriteLine("Connection string is empty");
