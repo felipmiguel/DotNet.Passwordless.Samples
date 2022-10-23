@@ -1,7 +1,7 @@
-RESOURCE_GROUP=rg-postgres-passwordless
+RESOURCE_GROUP=rg-dotnet-passwordless
 POSTGRESQL_HOST=postgres-passwordless
 DATABASE_NAME=checklist
-DATABASE_FQDN=${POSTGRESQL_HOST}.postgres.database.azure.com
+POSTGRESQL_FQDN=${POSTGRESQL_HOST}.postgres.database.azure.com
 LOCATION=eastus
 POSTGRESQL_ADMIN_USER=azureuser
 # Generating a random password for Posgresql admin user as it is mandatory

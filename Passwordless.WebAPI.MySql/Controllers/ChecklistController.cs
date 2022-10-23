@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Sample.Repository;
 using Sample.Repository.Model;
 
-namespace Passwordless.WebAPI.PgSql.Controllers
+namespace Passwordless.WebAPI.MySql.Controllers
 {
     [ApiController]
     [Route("[controller]")]

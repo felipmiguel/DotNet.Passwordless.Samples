@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Sample.Repository.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Passwordless.WebAPI.PgSql.EF.Model
+namespace Sample.Repository
 {
     public static class SeedData
     {

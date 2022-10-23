@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Passwordless.WebAPI.PgSql.EF;
+using Sample.Repository;
 
 #nullable disable
 
 namespace Passwordless.WebAPI.PgSql.Migrations
 {
     [DbContext(typeof(ChecklistContext))]
-    [Migration("20221013155909_InitialCreate")]
+    [Migration("20221023002410_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Passwordless.WebAPI.PgSql.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Passwordless.WebAPI.PgSql.EF.Model.CheckItem", b =>
+            modelBuilder.Entity("Sample.Repository.Model.CheckItem", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -36,18 +36,16 @@ namespace Passwordless.WebAPI.PgSql.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ID")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.HasKey("ID");
 
                     b.HasIndex("ChecklistID");
 
                     b.ToTable("CheckItems");
                 });
 
-            modelBuilder.Entity("Passwordless.WebAPI.PgSql.EF.Model.Checklist", b =>
+            modelBuilder.Entity("Sample.Repository.Model.Checklist", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -59,22 +57,19 @@ namespace Passwordless.WebAPI.PgSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ID")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.HasKey("ID");
 
                     b.ToTable("Checklists");
                 });
 
-            modelBuilder.Entity("Passwordless.WebAPI.PgSql.EF.Model.CheckItem", b =>
+            modelBuilder.Entity("Sample.Repository.Model.CheckItem", b =>
                 {
-                    b.HasOne("Passwordless.WebAPI.PgSql.EF.Model.Checklist", "Checklist")
+                    b.HasOne("Sample.Repository.Model.Checklist", "Checklist")
                         .WithMany("CheckItems")
                         .HasForeignKey("ChecklistID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -83,7 +78,7 @@ namespace Passwordless.WebAPI.PgSql.Migrations
                     b.Navigation("Checklist");
                 });
 
-            modelBuilder.Entity("Passwordless.WebAPI.PgSql.EF.Model.Checklist", b =>
+            modelBuilder.Entity("Sample.Repository.Model.Checklist", b =>
                 {
                     b.Navigation("CheckItems");
                 });
