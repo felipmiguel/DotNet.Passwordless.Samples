@@ -82,3 +82,5 @@ dotnet publish -c Release -o publish
 cd publish
 zip -r app.zip .
 az webapp deploy -g $RESOURCE_GROUP --name $APPSERVICE_MYSQL --src-path ./app.zip --clean true
+
+echo 'Remember changing the connection string with include "Trust Server Certificate=true"'
