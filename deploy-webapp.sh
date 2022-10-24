@@ -7,8 +7,12 @@ LOCATION=eastus
 MYSQL_HOST=mysql-passwordless
 MYSQL_FQDN=${MYSQL_HOST}.mysql.database.azure.com
 
+MSSQL_HOST=mssql-passwordless
+MSSQL_FQDN=${MSSQL_HOST}.database.azure.com
+
 APPSERVICE_PSQL=dotnet-passwordless-pgsql
 APPSERVICE_MYSQL=dotnet-passwordless-mysql
+APPSERVICE_MSSQL=dotnet-passwordless-mssql
 APPSERVICE_PLAN="asp-dotnetpasswordless"
 
 # Create a resource group
@@ -24,6 +28,12 @@ az webapp create \
 
 az webapp create \
     --name $APPSERVICE_MYSQL \
+    --resource-group $RESOURCE_GROUP \
+    --plan $APPSERVICE_PLAN \
+    --runtime "DOTNETCORE:6.0"
+
+az webapp create \
+    --name $APPSERVICE_MSSQL \
     --resource-group $RESOURCE_GROUP \
     --plan $APPSERVICE_PLAN \
     --runtime "DOTNETCORE:6.0"
@@ -84,3 +94,40 @@ zip -r app.zip .
 az webapp deploy -g $RESOURCE_GROUP --name $APPSERVICE_MYSQL --src-path ./app.zip --clean true
 
 echo 'Remember changing the connection string with include "Trust Server Certificate=true"'
+
+
+# SQL SERVER
+cd Passwordless.WebAPI.MsSql
+
+dotnet build
+
+# Get connections string
+# "Server=mysql-passwordless.mysql.database.azure.com;Database=checklist;User ID=fmiguel@microsoft.com;Port=3306;SSL Mode=Required;Allow Public Key Retrieval=True;Connection Timeout=30"
+CONNSTRING="Server=tcp:${MSSQL_HOST}.database.windows.net;Database=checklist;Authentication=Active Directory Default;TrustServerCertificate=True"
+ASPNETCORE_ENVIRONMENT=Deployment
+echo "{\"ConnectionStrings\":{\"AZURE_MSSQL_CONNECTIONSTRING\":\"${CONNSTRING}\"}}" >appsettings.Deployment.json
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+az webapp connection create sql \
+    --resource-group $RESOURCE_GROUP \
+    --name $APPSERVICE_MSSQL \
+    --tg $RESOURCE_GROUP \
+    --server $MSSQL_HOST \
+    --database $DATABASE_NAME \
+    --client-type dotnet \
+    --system-identity
+
+dotnet publish -c Release -o publish
+cd publish
+zip -r app.zip .
+az webapp deploy -g $RESOURCE_GROUP --name $APPSERVICE_MSSQL --src-path ./app.zip --clean true
+
+echo 'Remember changing the connection string with include "Trust Server Certificate=true"'
+
+# webapp connection doesn't work for SQL Server
+# az webapp connection create sql --resource-group rg-dotnet-passwordless --name dotnet-passwordless-mssql --tg rg-dotnet-passwordless --server mssql-passwordless --database checklist --client-type dotnet --system-identity
+
+sqlcmd -S $MSSQL_HOST.database.windows.net -d $DATABASE_NAME -U $USER -G -l 30
